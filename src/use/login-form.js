@@ -11,11 +11,13 @@ export function useLoginForm() {
     const { value: email, errorMessage: eError, handleBlur: eBlur  } = useField(
         'email',
         yup
-            .string()
+            .string('xrustofor84@gmail.com')
             .trim()
             .required('Пожалуста введите email')
             .email('Необходимо ввести коректный email')
     );
+
+    email.value = 'xrustofor84@gmail.com'
 
     const MIN_LENGTH = 6;
 
@@ -27,6 +29,8 @@ export function useLoginForm() {
             .required('Пожалуста введите проль')
             .min(MIN_LENGTH, `Пароь не может быть ${MIN_LENGTH} символов`)
     );
+
+    password.value = 'ouzD6984'
 
     const isToManyAttempts = computed(() => submitCount.value >= 3)
 
