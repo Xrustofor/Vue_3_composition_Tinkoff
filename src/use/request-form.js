@@ -1,0 +1,44 @@
+import {useField, useForm} from "vee-validate";
+import * as yup from 'yup'
+export function useRequestForm(fn) {
+    const { isSubmitting, handleSubmit } = useForm({
+        initialValues:{
+            status: 'active'
+        }
+    })
+    const {value: fio, errorMessage: fError, handleBlur: fBlur } = useField(
+        'fio',
+        yup.string()
+            .trim()
+            .required('Введите ФИО клиента')
+    )
+    const {value: phone, errorMessage: pError, handleBlur: pBlur } = useField(
+        'phone',
+        yup.string()
+            .trim()
+            .required('Телефон не может быть пустым'),
+    )
+    const {value: amount, errorMessage: aError, handleBlur: aBlur } = useField(
+        'amount',
+        yup.number()
+            .required('введите сумму')
+            .min(0, 'Сумма не может быть меньше 0')
+    )
+    const {value: status} = useField('status')
+
+    const onSubmit = handleSubmit(async values => fn(values))
+    return {
+        isSubmitting,
+        onSubmit,
+        fio,
+        phone,
+        amount,
+        status,
+        fError,
+        fBlur,
+        pError,
+        pBlur,
+        aError,
+        aBlur
+    }
+}
