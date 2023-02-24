@@ -4,6 +4,7 @@
     <template #header>
       <button class="btn primary" @click="modal = true">Создать</button>
     </template>
+    <request-filter v-model="filter"></request-filter>
     <request-table :requests="requests"></request-table>
     <teleport to="body">
       <app-modal v-if="modal" title="Создать заявку" @close="modal=false">
@@ -22,6 +23,7 @@ import RequestTable from "@/components/request/RequestTable";
 import AppModal from "@/components/ui/AppModal";
 import RequestModal from "@/components/request/RequestModal";
 import AppLoader from "@/components/ui/AppLoader";
+import RequestFilter from "@/components/request/RequestFilter"
 
 
 export default {
@@ -30,7 +32,26 @@ export default {
     const modal = ref(false);
     const store = useStore();
     const loading = ref(false);
-    const requests = computed(() => store.getters['request/requests'])
+    const requests = computed(() => store.getters['request/requests']
+        .filter( request => {
+          if(filter.value.name){
+            return request.fio.includes(filter.value.name);
+          }else{
+            return request
+          }
+        })
+        .filter(request => {
+          if(filter.value.status){
+            return request.status === filter.value.status
+          }else{
+            return request;
+          }
+        })
+
+    )
+    const filter = ref({});
+
+
     onMounted(async () => {
       loading.value = true;
       await store.dispatch('request/load')
@@ -40,6 +61,7 @@ export default {
       modal,
       requests,
       loading,
+      filter,
     }
   },
   components: {
@@ -47,7 +69,8 @@ export default {
     AppPage,
     RequestTable,
     AppModal,
-    RequestModal
+    RequestModal,
+    RequestFilter
   }
 }
 </script>
