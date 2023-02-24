@@ -21,8 +21,8 @@
         <app-status v-if="r.status" :type="r.status"></app-status>
       </td>
       <td>
-        <router-link v-slot="navigate" custom :to="{ name: 'Request', params: { id: r.id } }">
-          <button class="btn primary" @click="navigate">Открыть</button>
+        <router-link v-slot="{ navigate }" custom :to="{ name: 'Request', params: { id: r.id } }">
+          <button class="btn" @click="navigate">Открыть</button>
         </router-link>
       </td>
     </tr>
@@ -39,7 +39,7 @@ export default {
   },
   setup(){
     return {
-      currency
+      currency,
     }
   },
   components:{
