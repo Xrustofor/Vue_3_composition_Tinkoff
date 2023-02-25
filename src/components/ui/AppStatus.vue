@@ -4,7 +4,7 @@
 
 <script>
 
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 export default {
   props: {
@@ -30,9 +30,14 @@ export default {
       done: 'Завершен',
       pending: 'Выполняеться',
     }
-
     const className = ref(classMap[props.type]);
     const text = ref(textMap[props.type]);
+
+    watch(props, val => {
+      className.value = classMap[val.type]
+      text.value = textMap[val.type]
+    })
+
 
     return {
       className,
